@@ -120,6 +120,7 @@ the true ratings in the first N samples from the test subset sorted by the predi
         </figcaption>
     </figure>
 </div>
+</br>
 
 We draw the following conclusions:
 * The percentage of terrible recommendations (with true rating of 0) decreases from 40% using the baseline to 10% using our model for top 25, and from 35% to 18% for top 100.
@@ -139,6 +140,7 @@ only 59%.
         </figcaption>
     </figure>
 </div>
+</br>
 
 In conclusion, not only does the factorization machine model provide more relevant samples, but both the relevant and the irrelevant samples have higher ratings overall.
 

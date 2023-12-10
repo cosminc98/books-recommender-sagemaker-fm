@@ -141,6 +141,9 @@ only 59%.
 </br>
 
 In conclusion, not only does the factorization machine model provide more relevant samples, but both the relevant and the irrelevant samples have higher ratings overall.
+We can also take a look at the Pearson correlation coefficient between the true rating and the predicted ratings. For a fixed context size of 5 books, our model achieved
+a coefficient of 0.142 which is higher than the 0.106 that the baseline got. While still being considered a low correlation value, it should be better than the baseline
+at sorting the samples to know which ones to recommend to users.
 
 <a name="example-recommendation"></a>
 ### Example Recommendation

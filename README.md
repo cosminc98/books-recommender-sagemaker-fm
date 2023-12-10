@@ -10,6 +10,7 @@
 3. [Results](#results)
     * [Model Evaluation](#model-evaluation)
     * [Example Recommendation](#example-recommendation)
+4. [Pretrained Model](#pretrained-model)
 
 <a name="introduction"></a>
 ## Introduction
@@ -175,3 +176,10 @@ The recommended books:
 * "Der entzauberte Regenbogen. Wissensch..." by "Richard Dawkins"
 * "Wild Cards (Volume 1)" by "George R.R. Martin"
 * "Blood of the Fold (Sword of Truth, Bo..." by "Terry Goodkind"
+
+<a name="pretrained-model"></a>
+## Pretrained Model
+
+You require multiple files to run the inference notebook:
+1. The factorization machine model parameters which you need not download as SageMaker can deploy an endpoint using the S3 object at [this URL](https://cosminc98-public-models.s3.eu-central-1.amazonaws.com/books-recommender/factorization-machine/model.tar.gz).
+2. The other files are contained in [this archive](https://cosminc98-public-models.s3.eu-central-1.amazonaws.com/books-recommender/factorization-machine/preprocessing_assets.zip), and you need to have it available on the local file system of your notebook instance.

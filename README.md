@@ -14,7 +14,6 @@
 
 <a name="introduction"></a>
 ## Introduction
----
 
 This project uses factorization machines to build a recommender system that can handle anonymous users (which the model has not seen during training) by
 simply having them provide a few books that they read and liked. [This](https://github.com/edrans/-aws-sagemaker-builtin-notebooks/blob/main/factorization-machine/Explicit-feedback/Recommendation-Machine-Explicit.ipynb) 

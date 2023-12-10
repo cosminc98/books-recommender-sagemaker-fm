@@ -17,7 +17,7 @@
 
 This project uses factorization machines to build a recommender system that can handle anonymous users (which the model has not seen during training) by
 simply having them provide a few books that they read and liked. [This](https://github.com/edrans/-aws-sagemaker-builtin-notebooks/blob/main/factorization-machine/Explicit-feedback/Recommendation-Machine-Explicit.ipynb) 
-notebook was used as a starting point for training a factorization machine in AWS SageMaker. The main differences between that one and this project are in 
+notebook was used as a starting point for training a factorization machine in AWS SageMaker. The main differences between it and this project are in 
 data preprocessing, having eliminated the user features to allow for anonymous inference without retraining, and in changing the factorization machine from 
 binary classification to regression. The reason for changing to regression is trying to obtain as many "10/10" rated books (true labels) in the top 25 / top 100 
 books sorted by the factorization machine predicted ratings. If using binary classification, either we'll have too few books for the positive class by choosing 
@@ -51,8 +51,7 @@ or fewer. The Amazon SageMaker FM algorithm provides a robust and highly scalabl
         <figcaption style="text-align:left">
           <b>Figure 1 - Anonymous Features</b>; they are anonymous because we do not one-hot encode the user ID and instead we rely on the interactions between 
           the book that we want to rate, called target books (TB), and the books that the anonymous user said they read and liked, called context books (CB), 
-          which are provided via explicit feedback, to accurately predict if an anonymous user will like a book. For more information on how these features are
-          used see the Training notebook.
+          to accurately predict if an anonymous user will like the target book. For more information on how these features are used see the Training notebook.
         </figcaption>
     </figure>
 </div>
@@ -123,10 +122,9 @@ the true ratings in the first N samples from the test subset sorted by the predi
 </br>
 
 We draw the following conclusions:
-* The percentage of terrible recommendations (with true rating of 0) decreases from 40% using the baseline to 10% using our model for top 25, and from 35% to 18% for top 100.
-* The percentage of excellent recommendations (with true rating of 10) increases from 24% using the baseline to 43% using our model for top 25, and from 25% to 44% for top 100.
-* This means that our model, while not achieving a great improvement in mean absolute error compared to assigning the mean rating to every sample, is capable of assigning slightly higher predicted ratings to books that were actually good, which is all that we care about when we are ranking samples to recommend. Our model had a mean absolute
-error of 0.383 and the baseline of 0.405 (the predicted ratings were normalized between 0 and 1).
+* The percentage of terrible recommendations (with true rating of 0) decreases from 40% using the baseline to 12% using our model for top 25, and from 35% to 18% for top 100.
+* The percentage of excellent recommendations (with true rating of 10) increases from 24% using the baseline to 44% using our model for top 25, and from 25% to 44% for top 100.
+* This means that our model is capable of assigning slightly higher predicted ratings to books that were actually good, which is all that we care about when we are ranking samples to recommend.
 
 In Figure 3 we see almost the same information, but we binarize the true book ratings into "Relevant" or "Not Relevant", where "Relevant" means a rating of at least 7.
 With our model, we have 68% relevant samples vs. 60% with the baseline in the top 25 samples. For the top 100 samples, our model has 75% relevant samples and the baseline

@@ -4,11 +4,11 @@
     * [Dataset](#dataset)
     * [Definitions](#definitions)
     * [Factorization Machines](#factorization-machines)
-    * [Anonymous Features Generation](#anonymous-aeatures-generation)
+    * [Anonymous Features Generation](#anonymous-features-generation)
     * [Reducing the Search Space](#reducing-the-search-space)
 2. [Project Structure](#project-structure)
 3. [Results](#results)
-    * [Model Evaluation](#nodel-evaluation)
+    * [Model Evaluation](#model-evaluation)
     * [Example Recommendation](#example-recommendation)
 
 <a name="introduction"></a>
@@ -56,7 +56,6 @@ or fewer. The Amazon SageMaker FM algorithm provides a robust and highly scalabl
         </figcaption>
     </figure>
 </div>
-</br>
 
 <a name="anonymous-features-generation"></a>
 ### Anonymous Features Generation
@@ -99,4 +98,80 @@ This project is divided in three notebooks. If you want to train a model from sc
     * Proximal books are found by following what other books were liked by users that liked the given context book.
 Books written by the same author are also considered proximal.
 3. Inference Notebook
-   * 
+    * Here you can deploy the factorization machine model using a SageMaker endpoint.
+    * You can also get book recommendations in under 1 second using the proximal books to reduce the search space and the factorization
+machine model to rank them.
+
+<a name="results"></a>
+## Results
+
+<a name="model-evaluation"></a>
+### Model Evaluation
+
+We evaluate the model and a baseline on a separate subset than the one we trained on. The test subset does not overlap with the training subset in terms of users.
+The baseline just assigns the average rating for that book from the training subset while completely ignoring the context books. Figure 2 shows the distribution of
+the true ratings in the first N samples from the test subset sorted by the predicted rating from our model and from the baseline:
+
+<div style="width:50%;margin-left:auto;margin-right:auto;">
+    <figure>
+        <img width="750" src="https://cosminc98-public-models.s3.eu-central-1.amazonaws.com/books-recommender/factorization-machine/ratings_distribution.png"></br>
+        <figcaption style="text-align:left">
+          <b>Figure 2.</b>
+        </figcaption>
+    </figure>
+</div>
+
+We draw the following conclusions:
+* The percentage of terrible recommendations (with true rating of 0) decreases from 40% using the baseline to 10% using our model for top 25, and from 35% to 18% for top 100.
+* The percentage of excellent recommendations (with true rating of 10) increases from 24% using the baseline to 43% using our model for top 25, and from 25% to 44% for top 100.
+* This means that our model, while not achieving a great improvement in mean absolute error compared to assigning the mean rating to every sample, is capable of assigning slightly higher predicted ratings to books that were actually good, which is all that we care about when we are ranking samples to recommend. Our model had a mean absolute
+error of 0.383 and the baseline of 0.405 (the predicted ratings were normalized between 0 and 1).
+
+In Figure 3 we see almost the same information, but we binarize the true book ratings into "Relevant" or "Not Relevant", where "Relevant" means a rating of at least 7.
+With our model, we have 68% relevant samples vs. 60% with the baseline in the top 25 samples. For the top 100 samples, our model has 75% relevant samples and the baseline
+only 59%.
+
+<div style="width:50%;margin-left:auto;margin-right:auto;">
+    <figure>
+        <img width="750" src="https://cosminc98-public-models.s3.eu-central-1.amazonaws.com/books-recommender/factorization-machine/relevance_distribution.png"></br>
+        <figcaption style="text-align:left">
+          <b>Figure 3.</b>
+        </figcaption>
+    </figure>
+</div>
+
+In conclusion, not only does the factorization machine model provide more relevant samples, but both the relevant and the irrelevant samples have higher ratings overall.
+
+<a name="example-recommendation"></a>
+### Example Recommendation
+
+Here is an example of book recommendations from 3 context books. You will be able to see the main problem with the model at the moment, which is left for future work.
+The problem is the imperfect deduplication, which leads the model to recommend the same book as the one we told it we just read. Although it is the same book, they are
+two versions, with two different ISBNs.
+
+The books that the recommendations were based on:
+* "The Selfish Gene" by "Richard Dawkins"
+* "Climbing Mount Improbable" by "Richard Dawkins"
+* "A Clash of Kings" by "George R.R. Martin"
+
+The recommended books:
+* "A Clash of Kings" by "George R.R. Martin"
+* "Windhaven" by "George R.R. Martin"
+* "Warchild" by "Karin Lowachee"
+* "A Storm of Swords" by "George R.R. Martin"
+* "The Blind Watchmaker: Why the Evidenc..." by "Richard Dawkins"
+* "The Biotech Century: Harnessing the G..." by "Jeremy Rifkin"
+* "Shock" by "Robin Cook"
+* "Battlefield Earth: A Saga of the Year..." by "L. Ron Hubbard"
+* "Sarajevo Daily: A City and Its Newspa..." by "Tom Gjelten"
+* "My Century: A Novel" by "Gunter Grass"
+* "Fevre Dream" by "George R.R. Martin"
+* "Tuf Voyaging" by "George R.R. Martin"
+* "The Extended Phenotype: The Long Reac..." by "Richard Dawkins"
+* "Joker's Wild (Wild Cards, Vol 3)" by "George R.R. Martin"
+* "Down and Dirty (Wild Cards, No 5)" by "George R.R. Martin"
+* "The Green Lifestyle Handbook: 1001 Wa..." by "Jeremy Rifkin"
+* "The Danzig Trilogy: The Tin Drum, Cat..." by "Gunter Grass"
+* "Der entzauberte Regenbogen. Wissensch..." by "Richard Dawkins"
+* "Wild Cards (Volume 1)" by "George R.R. Martin"
+* "Blood of the Fold (Sword of Truth, Bo..." by "Terry Goodkind"
